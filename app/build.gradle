@@ -43,4 +43,14 @@ dependencies {
 
     //添加zxing二维码依赖
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
+
+    //okhttp的依赖
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+
+
+    //ok日志拦截器 需要使用日志拦截器的时候使用
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
+
+    implementation 'com.google.code.gson:gson:2.4'
 }
