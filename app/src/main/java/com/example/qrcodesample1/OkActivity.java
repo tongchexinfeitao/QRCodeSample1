@@ -1,5 +1,6 @@
 package com.example.qrcodesample1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -43,7 +48,7 @@ public class OkActivity extends AppCompatActivity {
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
                 // TODO: 2019/8/31  1 构造 OkHttpClient
-                OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                         .writeTimeout(5, TimeUnit.SECONDS)
                         .readTimeout(5, TimeUnit.SECONDS)
                         .connectTimeout(5, TimeUnit.SECONDS)
@@ -201,15 +206,36 @@ public class OkActivity extends AppCompatActivity {
                 break;
             case R.id.btn_post_Async:
 
-                OkhttpUtil.getInstance().doGet("http://172.17.8.100/small/commodity/v1/commodityList", new OkhttpUtil.OkhttpCallBack() {
+//                OkhttpUtil.getInstance().doGet("http://172.17.8.100/small/commodity/v1/commodityList", new OkhttpUtil.OkhttpCallBack() {
+//                    @Override
+//                    public void onSuccess(String json) {
+//                        Toast.makeText(OkActivity.this, "请求成功" +json, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable throwable) {
+//
+//                    }
+//                });
+
+
+                Map<String, String> map = new HashMap<>();
+                map.put("phone", "15501186623");
+                map.put("pwd", "123456");
+                OkhttpUtil.getInstance().doPost("http://172.17.8.100/small/user/v1/login", map, new OkhttpUtil.OkhttpCallBack() {
                     @Override
                     public void onSuccess(String json) {
-                        Toast.makeText(OkActivity.this, "请求成功" +json, Toast.LENGTH_SHORT).show();
+
+                        LoginBean loginBean = new Gson().fromJson(json, LoginBean.class);
+                        //发送
+                        EventBus.getDefault().postSticky(loginBean);
+                        Toast.makeText(OkActivity.this, "post成功" + json, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(OkActivity.this,MainActivity.class));
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-
+                        Toast.makeText(OkActivity.this, "post失败", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;

@@ -29,6 +29,10 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.camera.BitmapLuminanceSource;
 import com.uuzuche.lib_zxing.decoding.DecodeFormatManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -57,6 +61,27 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this
                 , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}
                 , 100);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    public void receiveLoginBean(LoginBean loginBean) {
+        String nickName = loginBean.getResult().getNickName();
+        Bitmap image = CodeUtils.createImage(nickName, 400, 400, null);
+        mIvQrPicture.setImageBitmap(image);
     }
 
 
@@ -123,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (rawResult != null) {
             String result = rawResult.getText();
-            Toast.makeText(MainActivity.this, "长按识别成功"+result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "长按识别成功" + result, Toast.LENGTH_SHORT).show();
 
         } else {
             Toast.makeText(MainActivity.this, "长按识别失败", Toast.LENGTH_SHORT).show();
