@@ -40,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,13 +52,14 @@ public class MainActivity extends AppCompatActivity {
     Button mBtnQrScan;
     @BindView(R.id.iv_qr_picture)
     ImageView mIvQrPicture;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //butterknife必须绑定
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         ActivityCompat.requestPermissions(this
                 , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}
                 , 100);
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //eventBus解注册
         EventBus.getDefault().unregister(this);
     }
 
@@ -204,4 +207,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //butterknife解绑
+        unbinder.unbind();
+        //presenter解绑
+    }
 }

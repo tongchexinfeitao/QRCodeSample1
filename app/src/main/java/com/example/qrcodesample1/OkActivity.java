@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -218,26 +219,38 @@ public class OkActivity extends AppCompatActivity {
 //                    }
 //                });
 
-
+                String format ="[1][3456789]\\d{9}";
                 Map<String, String> map = new HashMap<>();
                 map.put("phone", "15501186623");
                 map.put("pwd", "123456");
-                OkhttpUtil.getInstance().doPost("http://172.17.8.100/small/user/v1/login", map, new OkhttpUtil.OkhttpCallBack() {
-                    @Override
-                    public void onSuccess(String json) {
 
-                        LoginBean loginBean = new Gson().fromJson(json, LoginBean.class);
-                        //发送
-                        EventBus.getDefault().postSticky(loginBean);
-                        Toast.makeText(OkActivity.this, "post成功" + json, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(OkActivity.this,MainActivity.class));
-                    }
+                //使用  Pattern类 校验是否符合规范
+                boolean matches = Pattern.matches(format, "15501186623");
 
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Toast.makeText(OkActivity.this, "post失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (matches) {
+                    OkhttpUtil.getInstance().doPost("http://172.17.8.100/small/user/v1/login", map, new OkhttpUtil.OkhttpCallBack() {
+                        @Override
+                        public void onSuccess(String json) {
+
+                            LoginBean loginBean = new Gson().fromJson(json, LoginBean.class);
+                            //发送
+                            EventBus.getDefault().postSticky(loginBean);
+                            Toast.makeText(OkActivity.this, "post成功" + json, Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(OkActivity.this,MainActivity.class));
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Toast.makeText(OkActivity.this, "post失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+                    Toast.makeText(OkActivity.this, "账号不符合规范", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+
                 break;
         }
     }

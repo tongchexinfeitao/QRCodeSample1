@@ -95,6 +95,9 @@ public class OkhttpUtil {
     }
 
     public void doPost(String url, Map<String, String> paramsMap, final OkhttpCallBack okhttpCallBack) {
+
+
+
         // TODO: 2019/9/2 构造一个  FormBody.Builder对象
         FormBody.Builder builder = new FormBody.Builder();
         // TODO: 2019/9/2 遍历map ，添加到builder中  （添加请求参数）
