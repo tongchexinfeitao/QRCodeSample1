@@ -48,6 +48,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
 
+    //配置retrofit2.0
+    implementation 'com.squareup.retrofit2:retrofit:+'
+//让retrofit支持Gson自动解析json
+    implementation 'com.squareup.retrofit2:converter-gson:+'
+
+
     //ok日志拦截器 需要使用日志拦截器的时候使用
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
