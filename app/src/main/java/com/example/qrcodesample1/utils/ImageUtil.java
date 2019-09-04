@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.qrcodesample1.utils;
 
 /*
  ******************************* Copyright (c)*********************************\

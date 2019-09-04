@@ -1,4 +1,4 @@
-package com.example.qrcodesample1;
+package com.example.qrcodesample1.view.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qrcodesample1.R;
+import com.example.qrcodesample1.bean.LoginBean;
+import com.example.qrcodesample1.utils.ImageUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -42,7 +45,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity {
+public class QRCodeActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_SCAN = 100;
     private static final int REQUEST_CODE_OENG_IMAGE = 200;
@@ -151,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (rawResult != null) {
             String result = rawResult.getText();
-            Toast.makeText(MainActivity.this, "长按识别成功" + result, Toast.LENGTH_SHORT).show();
+            Toast.makeText(QRCodeActivity.this, "长按识别成功" + result, Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(MainActivity.this, "长按识别失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QRCodeActivity.this, "长按识别失败", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -174,10 +177,10 @@ public class MainActivity extends AppCompatActivity {
                         if (resultType == CodeUtils.RESULT_SUCCESS) {
                             // TODO: 2019/8/30 如果成功 ，通过 RESULT_STRING ，取出二维码中存储的信息
                             String resultString = bundle.getString(CodeUtils.RESULT_STRING);
-                            Toast.makeText(MainActivity.this, "扫描成功" + resultString, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QRCodeActivity.this, "扫描成功" + resultString, Toast.LENGTH_SHORT).show();
                         } else if (resultType == CodeUtils.RESULT_FAILED) {
                             // TODO: 2019/8/30 失败提醒
-                            Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QRCodeActivity.this, "解析二维码失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -189,15 +192,15 @@ public class MainActivity extends AppCompatActivity {
                     //图片的绝对路径封装在intent的Uri中
                     Uri uri = data.getData();
                     // TODO: 2019/8/31  利用ImageUtil将uri转成绝对路径，然后使用 CodeUtils.analyzeBitmap去解析图片
-                    CodeUtils.analyzeBitmap(com.example.myapplication.ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback() {
+                    CodeUtils.analyzeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new CodeUtils.AnalyzeCallback() {
                         @Override
                         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-                            Toast.makeText(MainActivity.this, "解析图片成功" + result, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QRCodeActivity.this, "解析图片成功" + result, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onAnalyzeFailed() {
-                            Toast.makeText(MainActivity.this, "解析图片失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QRCodeActivity.this, "解析图片失败", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

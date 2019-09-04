@@ -47,11 +47,18 @@ dependencies {
     //okhttp的依赖
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
 
-
     //配置retrofit2.0
     implementation 'com.squareup.retrofit2:retrofit:+'
-//让retrofit支持Gson自动解析json
+    //让retrofit支持Gson自动解析json
     implementation 'com.squareup.retrofit2:converter-gson:+'
+
+    //Rxjava2需要依赖
+    implementation 'io.reactivex.rxjava2:rxjava:+'
+    //Rxandroid需要依赖
+    implementation 'io.reactivex.rxjava2:rxandroid:+'
+
+    //让retrofit支持Rxjava2
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:+'
 
 
     //ok日志拦截器 需要使用日志拦截器的时候使用

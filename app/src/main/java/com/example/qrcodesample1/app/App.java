@@ -1,4 +1,4 @@
-package com.example.qrcodesample1;
+package com.example.qrcodesample1.app;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.example.qrcodesample1;
+package com.example.qrcodesample1.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.qrcodesample1.IApi;
+import com.example.qrcodesample1.R;
+import com.example.qrcodesample1.bean.LoginBean;
+import com.example.qrcodesample1.bean.ProductBean;
+import com.example.qrcodesample1.utils.RetrofiManager;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -133,6 +141,29 @@ public class RetrofitActivity extends AppCompatActivity {
 
                 break;
             case R.id.btn_post_Async:
+
+
+                //添加请求头
+//                Map<String, String> headMap = new HashMap<>();
+//                headMap.put("userId","8112");
+//                headMap.put("sessionId","15658556002418112");
+
+                Map<String ,String> map  = new HashMap();
+                map.put("phone","15501186623");
+                map.put("pwd","123456");
+                RetrofiManager.getInstance().create()
+                        .loginForMap(map)
+                        .enqueue(new Callback<LoginBean>() {
+                            @Override
+                            public void onResponse(Call<LoginBean> call, Response<LoginBean> response) {
+                                Toast.makeText(RetrofitActivity.this, "请求成功", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<LoginBean> call, Throwable t) {
+
+                            }
+                        });
                 break;
         }
     }

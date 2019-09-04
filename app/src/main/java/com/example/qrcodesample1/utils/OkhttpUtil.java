@@ -1,4 +1,4 @@
-package com.example.qrcodesample1;
+package com.example.qrcodesample1.utils;
 
 import android.os.Handler;
 

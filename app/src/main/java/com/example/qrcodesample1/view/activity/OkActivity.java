@@ -1,4 +1,4 @@
-package com.example.qrcodesample1;
+package com.example.qrcodesample1.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.qrcodesample1.R;
+import com.example.qrcodesample1.bean.LoginBean;
+import com.example.qrcodesample1.bean.ProductBean;
+import com.example.qrcodesample1.utils.OkhttpUtil;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -236,7 +240,7 @@ public class OkActivity extends AppCompatActivity {
                             //发送
                             EventBus.getDefault().postSticky(loginBean);
                             Toast.makeText(OkActivity.this, "post成功" + json, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(OkActivity.this,MainActivity.class));
+                            startActivity(new Intent(OkActivity.this, QRCodeActivity.class));
                         }
 
                         @Override
