@@ -1,11 +1,13 @@
 package com.example.qrcodesample1;
 
+import com.example.qrcodesample1.bean.CartBean;
 import com.example.qrcodesample1.bean.LoginBean;
 import com.example.qrcodesample1.bean.ProductBean;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -50,6 +52,15 @@ public interface IApi {
     //联网请求获取商品信息列表
     @GET("small/commodity/v1/commodityList")
     Observable<ProductBean> getProductListForRxJava();   //get请求对应的 @Query
+
+    //联网请求获取商品信息列表
+    @GET("http://47.103.92.63:33003/wx/cart/index")
+    Observable<ResponseBody> test1();   //getsmall/commodity/v1/commodityList请求对应的 @Query
+
+
+    //将Call转成 io.reactivex 包下的 Observable
+    @GET("small/order/verify/v1/findShoppingCart")
+    Observable<CartBean> getCartInfo(@HeaderMap Map<String, String> headersMap);
 
 
 }

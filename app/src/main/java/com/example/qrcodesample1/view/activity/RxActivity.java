@@ -28,6 +28,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class RxActivity extends AppCompatActivity {
 
@@ -154,6 +155,22 @@ public class RxActivity extends AppCompatActivity {
                         });
                 break;
             case R.id.btn_post_Async:
+                RetrofiManager.getInstance().create()
+                        .test1()
+                        .subscribeOn(Schedulers.io()) //在子线程订阅，耗时操作放到子线程
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<ResponseBody>() {
+                            @Override
+                            public void accept(ResponseBody responseBody) throws Exception {
+                                Log.e("TAG", "成功" +responseBody.string());
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.e("TAG", "throwable" +throwable.toString());
+
+                            }
+                        });
                 break;
         }
     }
