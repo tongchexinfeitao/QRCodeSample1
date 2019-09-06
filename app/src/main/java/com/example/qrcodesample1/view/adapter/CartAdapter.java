@@ -114,6 +114,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         groupViewHolder.mSellerCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //做了三件事 0、计算当前商家的选中状态、然后取反拿到新状态 1、修改当前商家下的所有商品数据的状态 2、刷新适配器（重新修改view状态）3 通知底部状态栏改变
                 // TODO: 2019/9/5  拿到商家的checkbox当前的状态
                 boolean oldGroupIsChecked = true;
                 for (int i = 0; i < shoppingCartList.size(); i++) {
@@ -171,6 +172,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
         childViewHolder.mChildCb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //做了三件事  1、修改商品数据的状态 2、刷新适配器（重新修改view状态）3 通知底部状态栏改变
+
                 // TODO: 2019/9/5  修改当前商品的状态  ps:得到旧状态，置反之后就是新状态，然后修改数据为新状态
                 shoppingCartListBean.setChecked(!shoppingCartListBean.isChecked());
                 // TODO: 2019/9/5 重新计算商家的状态   ps：刷新适配器，会重新执行getGroupView方法，这个方法里面会计算，所以直接刷新就行
@@ -198,6 +201,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
         childViewHolder.mAddRemoveView.setmOnNumberChangeListener(new MyAddSubView.onNumberChangeListener() {
             @Override
             public void onNumberChange(int num) {
+                //做了三件事  1、修改商品数据的数量 2、刷新适配器（重新修改view状态）3 通知底部状态栏改变
+
                 // TODO: 2019/9/6 加减器数量变化的时候，修改商品的数量
                 shoppingCartListBean.setCount(num);
                 // TODO: 2019/9/6  刷新适配器

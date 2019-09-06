@@ -122,6 +122,12 @@ public class CartActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cb_cart_all_select:
+                //做了四件事
+                // 1、拿到旧状态、置反得到新状态
+                // 2、修改所有商品数据的状态
+                // 3、刷新适配 （修改view的状态）
+                // 4、刷新底部状态栏
+
                 // TODO: 2019/9/5 点击了全选按钮
                 boolean newIsAllChecked = !isAllChecked;
                 isAllChecked=newIsAllChecked;
