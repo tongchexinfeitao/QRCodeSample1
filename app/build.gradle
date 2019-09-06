@@ -69,4 +69,11 @@ dependencies {
 
     //eventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    //Glide库
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    //Glide的transformation库  支持圆角
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
 }
