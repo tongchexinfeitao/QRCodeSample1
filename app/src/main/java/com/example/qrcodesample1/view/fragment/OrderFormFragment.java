@@ -29,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class OrderFormFragmetn extends Fragment {
+public class OrderFormFragment extends Fragment {
     @BindView(R.id.xrv_orderForm)
     XRecyclerView mXrvOrderForm;
 
@@ -56,13 +56,13 @@ public class OrderFormFragmetn extends Fragment {
         //请求头
         Map<String, String> headersMap = new HashMap<>();
         headersMap.put("userId", "8112");
-        headersMap.put("sessionId", "15677398199148112");
+        headersMap.put("sessionId", "15681035104808112");
 
         //get的查询参数
         Map<String, Integer> paramsMap = new HashMap<>();
-        paramsMap.put("status", 1);
+        paramsMap.put("status", 0);
         paramsMap.put("page", 1);
-        paramsMap.put("count", 1);
+        paramsMap.put("count", 10);
         RetrofiManager.getInstance().create()
                 .getOrderFormInfo(headersMap, paramsMap)
                 .subscribeOn(Schedulers.io())
@@ -71,11 +71,11 @@ public class OrderFormFragmetn extends Fragment {
                     @Override
                     public void accept(OrderFormBean orderFormBean) throws Exception {
                         if(orderFormBean !=null && "0000".equals(orderFormBean.getStatus())){
-                            Toast.makeText(OrderFormFragmetn.this.getContext(), "订单获取成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrderFormFragment.this.getContext(), "订单获取成功", Toast.LENGTH_SHORT).show();
                             Log.e("TAG", "accept : " + orderFormBean.toString());
                             mOrderFormAdapter.setData(orderFormBean.getOrderList());
                         }else{
-                            Toast.makeText(OrderFormFragmetn.this.getContext(), "订单获取失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrderFormFragment.this.getContext(), "订单获取失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Consumer<Throwable>() {
