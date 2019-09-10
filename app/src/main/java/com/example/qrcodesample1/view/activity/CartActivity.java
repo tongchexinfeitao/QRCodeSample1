@@ -1,5 +1,6 @@
 package com.example.qrcodesample1.view.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class CartActivity extends AppCompatActivity {
     List<CartBean.ResultBean> mSellerList = new ArrayList<>();
     private CartAdapter mCartAdapter;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

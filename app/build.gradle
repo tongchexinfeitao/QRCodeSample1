@@ -76,4 +76,7 @@ dependencies {
 
     //Glide的transformation库  支持圆角
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
+
+    //xrecyclerview
+    implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
 }
