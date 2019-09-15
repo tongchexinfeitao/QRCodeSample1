@@ -36,7 +36,10 @@ public class MyAddSubView extends LinearLayout {
         super(context, attrs);
         View inflate = inflate(context, R.layout.add_remove_view_layout, this);
         ButterKnife.bind(inflate);
+
+        //通过   R.styleable.MyAddSubView 去拿到所有的自定义属性
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyAddSubView);
+        //通过  R.styleable.MyAddSubView_add_remove_color 去拿到自定义的add_remove_color属性
         int color = typedArray.getColor(R.styleable.MyAddSubView_add_remove_color, Color.BLUE);
         mProductNumberTv.setTextColor(color);
     }

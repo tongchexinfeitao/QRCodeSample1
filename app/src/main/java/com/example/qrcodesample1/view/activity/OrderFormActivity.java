@@ -1,7 +1,6 @@
 package com.example.qrcodesample1.view.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
@@ -21,9 +20,14 @@ public class OrderFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_form_ativity);
         ButterKnife.bind(this);
-        OrderFormFragment orderFragment = new OrderFormFragment();
+        //构造5个fragment
+        OrderFormFragment allOrderFragment = OrderFormFragment.creat(0);
+        OrderFormFragment waitPayOrderFragment = OrderFormFragment.creat(1);
+        OrderFormFragment waitReiceiveOrderFragment = OrderFormFragment.creat(2);
+        OrderFormFragment evaluateOrderFragment = OrderFormFragment.creat(3);
+        OrderFormFragment completeOrderFragment = OrderFormFragment.creat(9);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_order,orderFragment)
+                .replace(R.id.fl_order,allOrderFragment)
                 .commit();
     }
 }

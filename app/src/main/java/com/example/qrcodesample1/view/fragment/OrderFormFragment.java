@@ -30,6 +30,19 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class OrderFormFragment extends Fragment {
+
+    /**
+     * 根据订单类型创建一个OrderFormFragment对象
+     */
+    public static OrderFormFragment creat(int status) {
+        OrderFormFragment orderFormFragment = new OrderFormFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("status", status);
+        orderFormFragment.setArguments(bundle);
+        return orderFormFragment;
+    }
+
+
     @BindView(R.id.xrv_orderForm)
     XRecyclerView mXrvOrderForm;
 
@@ -49,6 +62,11 @@ public class OrderFormFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //从budle中取出状态值
+        Bundle bundle = getArguments();
+        int status = bundle.getInt("status");
+
+
         mOrderFormAdapter = new OrderFormAdapter(orderListBeans);
         mXrvOrderForm.setLayoutManager(new LinearLayoutManager(getContext()));
         mXrvOrderForm.setAdapter(mOrderFormAdapter);
@@ -60,7 +78,7 @@ public class OrderFormFragment extends Fragment {
 
         //get的查询参数
         Map<String, Integer> paramsMap = new HashMap<>();
-        paramsMap.put("status", 0);
+        paramsMap.put("status", status);
         paramsMap.put("page", 1);
         paramsMap.put("count", 10);
         RetrofiManager.getInstance().create()
@@ -70,11 +88,11 @@ public class OrderFormFragment extends Fragment {
                 .subscribe(new Consumer<OrderFormBean>() {
                     @Override
                     public void accept(OrderFormBean orderFormBean) throws Exception {
-                        if(orderFormBean !=null && "0000".equals(orderFormBean.getStatus())){
+                        if (orderFormBean != null && "0000".equals(orderFormBean.getStatus())) {
                             Toast.makeText(OrderFormFragment.this.getContext(), "订单获取成功", Toast.LENGTH_SHORT).show();
                             Log.e("TAG", "accept : " + orderFormBean.toString());
                             mOrderFormAdapter.setData(orderFormBean.getOrderList());
-                        }else{
+                        } else {
                             Toast.makeText(OrderFormFragment.this.getContext(), "订单获取失败", Toast.LENGTH_SHORT).show();
                         }
                     }
