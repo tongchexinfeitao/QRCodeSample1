@@ -70,7 +70,7 @@ public class CartActivity extends AppCompatActivity {
 
         Map<String, String> headersMap = new HashMap<>();
         headersMap.put("userId", "8112");
-        headersMap.put("sessionId", "15677398199148112");
+        headersMap.put("sessionId", "15685168023018112");
         RetrofiManager.getInstance()
                 .create()
                 .getCartInfo(headersMap)

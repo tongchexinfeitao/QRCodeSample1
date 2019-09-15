@@ -1,6 +1,8 @@
 package com.example.qrcodesample1.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,16 +25,22 @@ public class MyAddSubView extends LinearLayout {
 
     private int mNum = 1;
 
+
     public MyAddSubView(Context context) {
-        super(context, null);
+        super(context);
     }
 
+    //这里必须这么写
     public MyAddSubView(Context context, AttributeSet attrs) {
+        //必须是this
         super(context, attrs);
         View inflate = inflate(context, R.layout.add_remove_view_layout, this);
         ButterKnife.bind(inflate);
-
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MyAddSubView);
+        int color = typedArray.getColor(R.styleable.MyAddSubView_add_remove_color, Color.BLUE);
+        mProductNumberTv.setTextColor(color);
     }
+
 
     @OnClick({R.id.sub_tv, R.id.add_tv})
     public void onViewClicked(View view) {
@@ -40,7 +48,7 @@ public class MyAddSubView extends LinearLayout {
             case R.id.sub_tv:
                 if (mNum > 1) {
                     mNum--;
-                    mProductNumberTv.setText(mNum+"");
+                    mProductNumberTv.setText(mNum + "");
                     if (mOnNumberChangeListener != null) {
                         mOnNumberChangeListener.onNumberChange(mNum);
                     }
@@ -50,7 +58,7 @@ public class MyAddSubView extends LinearLayout {
                 break;
             case R.id.add_tv:
                 mNum++;
-                mProductNumberTv.setText(mNum+"");
+                mProductNumberTv.setText(mNum + "");
                 if (mOnNumberChangeListener != null) {
                     mOnNumberChangeListener.onNumberChange(mNum);
                 }
@@ -65,8 +73,8 @@ public class MyAddSubView extends LinearLayout {
     }
 
     public void setNum(int count) {
-        mNum=count;
-        mProductNumberTv.setText(mNum+"");
+        mNum = count;
+        mProductNumberTv.setText(mNum + "");
     }
 
     public interface onNumberChangeListener {

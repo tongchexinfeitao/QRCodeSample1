@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.qrcodesample1.R;
 import com.example.qrcodesample1.bean.OrderFormBean;
@@ -21,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderFormAdapter extends XRecyclerView.Adapter<XRecyclerView.ViewHolder> {
+public class OrderFormAdapter extends XRecyclerView.Adapter<OrderFormAdapter.OrderViewHolder> {
 
     //待支付
     private static final int WAIT_PARY_TYPE = 1;
@@ -43,97 +42,108 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<XRecyclerView.ViewHo
 
     @NonNull
     @Override
-    public XRecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View inflate = null;
-        RecyclerView.ViewHolder viewHolder = null;
-        if (i == COMPLETE_TYPE) {
-            inflate = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_order_form_complete_layout, viewGroup, false);
-            viewHolder = new CompleteViewHolder(inflate);
-        } else if (i == WAIT_PARY_TYPE) {
-            //用已完成的布局去代替去支付
-            inflate = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_order_form_complete_layout, viewGroup, false);
-            viewHolder = new CompleteViewHolder(inflate);
-
-        } else if (i == WAIT_RECEIVE_TYPE) {
-            inflate = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_order_form_receive_layout, viewGroup, false);
-            viewHolder = new WaitReceiveViewHolder(inflate);
-
-        } else if (i == WAIT_EVALUATE_TYPE) {
-            //用已完成的布局去代替去评价
-            inflate = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.item_order_form_complete_layout, viewGroup, false);
-            viewHolder = new CompleteViewHolder(inflate);
-        }
+    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View inflate = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_order_form_complete_layout, viewGroup, false);
+        OrderViewHolder viewHolder = new OrderViewHolder(inflate);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull XRecyclerView.ViewHolder viewHolder, int i) {
-        //拿到当前的订单
+    public void onBindViewHolder(@NonNull OrderViewHolder completeViewHolder, int i) {
+        //拿到当前订单的bean类
         OrderFormBean.OrderListBean orderListBean = mOrderListBeans.get(i);
-        if (viewHolder instanceof CompleteViewHolder) {
-            CompleteViewHolder completeViewHolder = (CompleteViewHolder) viewHolder;
-            completeViewHolder.mTvOrderId.setText("订单号  " + orderListBean.getOrderId());
+        //格式化时间
+        String time = simpleDateFormat.format(orderListBean.getOrderTime());
+        //拿到订单中所有的商品
+        List<OrderFormBean.OrderListBean.DetailListBean> detailList = orderListBean.getDetailList();
+        //计算总数量和总价格
+        double totalPrice = 0;
+        int totalCount = 0;
+        for (int j = 0; j < detailList.size(); j++) {
+            OrderFormBean.OrderListBean.DetailListBean detailListBean = detailList.get(j);
+            totalCount += detailListBean.getCommodityCount();
+            totalPrice += detailListBean.getCommodityPrice() * detailListBean.getCommodityCount();
+        }
+        String format = "共%s件商品,需付款%s元";
+        String format1 = String.format(format, "" + totalCount, "" + totalPrice);
 
-            String time = simpleDateFormat.format(orderListBean.getOrderTime());
-            completeViewHolder.mTvOriderTime.setText(time);
-            completeViewHolder.mRvOrderProduct.setLayoutManager(new LinearLayoutManager(completeViewHolder.itemView.getContext()));
+        //订单号
+        completeViewHolder.mTvOrderId.setText("订单号  " + orderListBean.getOrderId());
+        //上方的时间
+        completeViewHolder.mTvOriderTimeTop.setText(time);
+        //下方的时间
+        completeViewHolder.mTvOriderTimeBottop.setText(time);
+        //待支付中的数量和价格
+        completeViewHolder.mTvTotalPrice.setText(format1);
+        //带收货中的快递公司
+        completeViewHolder.mTvExpressCompany.setText(orderListBean.getExpressCompName());
+        //带收货中的快递号
+        completeViewHolder.mTvExpressId.setText(orderListBean.getExpressSn());
 
-            //设置商品的recyclerview
-            completeViewHolder.orderFormChildAdapter = new OrderFormChildAdapter(orderListBean.getDetailList());
-            completeViewHolder.mRvOrderProduct.setAdapter(completeViewHolder.orderFormChildAdapter);
+        //拿到当前的订单
+        switch (orderListBean.getOrderStatus()) {
+            case WAIT_PARY_TYPE:
+                //待支付的控件需要显示
+                completeViewHolder.mTvOrderId.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvOriderTimeTop.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvTotalPrice.setVisibility(View.VISIBLE);
+                completeViewHolder.mBtnCancelOrder.setVisibility(View.VISIBLE);
+                completeViewHolder.mBtnGoPay.setVisibility(View.VISIBLE);
 
-        } else if (viewHolder instanceof WaitReceiveViewHolder) {
-            final WaitReceiveViewHolder waitReceiveViewHolder = (WaitReceiveViewHolder) viewHolder;
-            waitReceiveViewHolder.mTvOrderId.setText(orderListBean.getOrderId());
-            String time = simpleDateFormat.format(orderListBean.getOrderTime());
-            waitReceiveViewHolder.mTvOriderTime.setText(time);
-            waitReceiveViewHolder.mTvExpressCompany.setText(orderListBean.getExpressCompName());
-            waitReceiveViewHolder.mTvExpressId.setText(orderListBean.getExpressSn());
-            waitReceiveViewHolder.mBtnReceive.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(waitReceiveViewHolder.itemView.getContext(), "去收货", Toast.LENGTH_SHORT).show();
-                }
-            });
-            //设置商品的recyclerview
-            waitReceiveViewHolder.orderFormChildAdapter = new OrderFormChildAdapter(orderListBean.getDetailList());
-            waitReceiveViewHolder.mRvOrderProduct.setLayoutManager(new LinearLayoutManager(waitReceiveViewHolder.itemView.getContext()));
-            waitReceiveViewHolder.mRvOrderProduct.setAdapter(waitReceiveViewHolder.orderFormChildAdapter);
+                //待收货中的快递公司和快递号需要隐藏
+                completeViewHolder.mTvExpressCompany.setVisibility(View.GONE);
+                completeViewHolder.mTvExpressId.setVisibility(View.GONE);
+                completeViewHolder.mTvConfirmReceive.setVisibility(View.GONE);
+
+                //待评价的时间和删除按钮需要隐藏
+                completeViewHolder.mTvOriderTimeBottop.setVisibility(View.GONE);
+                completeViewHolder.mBtnDeleteOrder.setVisibility(View.GONE);
+                break;
+                //当订单状态是待收货的时候
+            case WAIT_RECEIVE_TYPE:
+                completeViewHolder.mTvOrderId.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvOriderTimeTop.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvExpressCompany.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvExpressId.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvConfirmReceive.setVisibility(View.VISIBLE);
+
+                //关于待支付的控件需要隐藏
+                completeViewHolder.mTvTotalPrice.setVisibility(View.GONE);
+                completeViewHolder.mBtnCancelOrder.setVisibility(View.GONE);
+                completeViewHolder.mBtnGoPay.setVisibility(View.GONE);
+
+                //待评价的时间和删除按钮需要隐藏
+                completeViewHolder.mBtnDeleteOrder.setVisibility(View.GONE);
+                completeViewHolder.mTvOriderTimeBottop.setVisibility(View.GONE);
+                break;
+            case WAIT_EVALUATE_TYPE:
+            case COMPLETE_TYPE:
+                //关于待评价和已完成的删除按钮和下方时间需要显示
+                completeViewHolder.mBtnDeleteOrder.setVisibility(View.VISIBLE);
+                completeViewHolder.mTvOriderTimeBottop.setVisibility(View.VISIBLE);
+
+                //关于待支付的控件需要隐藏
+                completeViewHolder.mTvTotalPrice.setVisibility(View.GONE);
+                completeViewHolder.mBtnCancelOrder.setVisibility(View.GONE);
+                completeViewHolder.mBtnGoPay.setVisibility(View.GONE);
+
+                //关于待收货的控件需要隐藏
+                completeViewHolder.mTvExpressCompany.setVisibility(View.GONE);
+                completeViewHolder.mTvExpressId.setVisibility(View.GONE);
+                completeViewHolder.mTvConfirmReceive.setVisibility(View.GONE);
+                break;
         }
 
+        completeViewHolder.mRvOrderProduct.setLayoutManager(new LinearLayoutManager(completeViewHolder.itemView.getContext()));
+        //设置商品的recyclerview
+        completeViewHolder.orderFormChildAdapter = new OrderFormChildAdapter(orderListBean.getDetailList());
+        completeViewHolder.mRvOrderProduct.setAdapter(completeViewHolder.orderFormChildAdapter);
     }
 
     @Override
     public int getItemCount() {
         return mOrderListBeans == null ? 0 : mOrderListBeans.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        OrderFormBean.OrderListBean orderListBean = mOrderListBeans.get(position);
-        int orderStatus = orderListBean.getOrderStatus();
-        //考试可以直接
-//        return orderStatus;
-        int itemViewType = 1;
-        switch (orderStatus) {
-            case 1:
-                itemViewType = WAIT_PARY_TYPE;
-                break;
-            case 2:
-                itemViewType = WAIT_RECEIVE_TYPE;
-                break;
-            case 3:
-                itemViewType = WAIT_EVALUATE_TYPE;
-                break;
-            case 9:
-                itemViewType = COMPLETE_TYPE;
-                break;
-        }
-        return itemViewType;
     }
 
     public void setData(List<OrderFormBean.OrderListBean> orderList) {
@@ -142,37 +152,32 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<XRecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    static class CompleteViewHolder extends XRecyclerView.ViewHolder {
+    static class OrderViewHolder extends XRecyclerView.ViewHolder {
         @BindView(R.id.tv_order_id)
         TextView mTvOrderId;
+        @BindView(R.id.tv_orider_time_top)
+        TextView mTvOriderTimeTop;
+        @BindView(R.id.btn_delete_order)
+        TextView mBtnDeleteOrder;
         @BindView(R.id.rv_order_product)
         RecyclerView mRvOrderProduct;
-        @BindView(R.id.tv_orider_time)
-        TextView mTvOriderTime;
-        OrderFormChildAdapter orderFormChildAdapter;
-
-        CompleteViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    static class WaitReceiveViewHolder extends XRecyclerView.ViewHolder {
-        @BindView(R.id.tv_order_id)
-        TextView mTvOrderId;
-        @BindView(R.id.tv_orider_time)
-        TextView mTvOriderTime;
-        @BindView(R.id.rv_order_product)
-        RecyclerView mRvOrderProduct;
+        @BindView(R.id.tv_total_price)
+        TextView mTvTotalPrice;
+        @BindView(R.id.tv_orider_time_bottop)
+        TextView mTvOriderTimeBottop;
+        @BindView(R.id.btn_cancel_order)
+        Button mBtnCancelOrder;
+        @BindView(R.id.btn_go_pay)
+        Button mBtnGoPay;
         @BindView(R.id.tv_express_company)
         TextView mTvExpressCompany;
         @BindView(R.id.tv_express_id)
         TextView mTvExpressId;
-        @BindView(R.id.btn_receive)
-        Button mBtnReceive;
+        @BindView(R.id.tv_confirm_receive)
+        Button mTvConfirmReceive;
         OrderFormChildAdapter orderFormChildAdapter;
 
-        WaitReceiveViewHolder(View view) {
+        OrderViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
