@@ -27,7 +27,7 @@ public class OrderFormActivity extends AppCompatActivity {
         OrderFormFragment evaluateOrderFragment = OrderFormFragment.creat(3);
         OrderFormFragment completeOrderFragment = OrderFormFragment.creat(9);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_order,allOrderFragment)
+                .replace(R.id.fl_order,waitPayOrderFragment)
                 .commit();
     }
 }

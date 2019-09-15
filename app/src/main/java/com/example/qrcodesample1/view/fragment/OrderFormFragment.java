@@ -68,13 +68,27 @@ public class OrderFormFragment extends Fragment {
 
 
         mOrderFormAdapter = new OrderFormAdapter(orderListBeans);
+        //设计订单的一些点击监听
+        mOrderFormAdapter.setOnOrderFormClickListener(new OrderFormAdapter.onOrderFormClickListener() {
+            @Override
+            public void onGoPay(String orderId) {
+                // TODO: 2019/9/15 调用支付的接口
+            }
+
+            @Override
+            public void onCancelOrder(String orderId) {
+                // TODO: 2019/9/15 调用取消订单接口
+            }
+        });
+
+
         mXrvOrderForm.setLayoutManager(new LinearLayoutManager(getContext()));
         mXrvOrderForm.setAdapter(mOrderFormAdapter);
 
         //请求头
         Map<String, String> headersMap = new HashMap<>();
         headersMap.put("userId", "8112");
-        headersMap.put("sessionId", "15685138971388112");
+        headersMap.put("sessionId", "15685191578528112");
 
         //get的查询参数
         Map<String, Integer> paramsMap = new HashMap<>();

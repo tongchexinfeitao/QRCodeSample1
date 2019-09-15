@@ -52,7 +52,7 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<OrderFormAdapter.Ord
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder completeViewHolder, int i) {
         //拿到当前订单的bean类
-        OrderFormBean.OrderListBean orderListBean = mOrderListBeans.get(i);
+        final OrderFormBean.OrderListBean orderListBean = mOrderListBeans.get(i);
         //格式化时间
         String time = simpleDateFormat.format(orderListBean.getOrderTime());
         //拿到订单中所有的商品
@@ -80,6 +80,26 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<OrderFormAdapter.Ord
         completeViewHolder.mTvExpressCompany.setText(orderListBean.getExpressCompName());
         //带收货中的快递号
         completeViewHolder.mTvExpressId.setText(orderListBean.getExpressSn());
+
+        //去支付
+        completeViewHolder.mBtnGoPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onOrderFormClickListener != null) {
+                    onOrderFormClickListener.onGoPay(orderListBean.getOrderId());
+                }
+            }
+        });
+
+        //取消订单
+        completeViewHolder.mBtnCancelOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onOrderFormClickListener != null) {
+                    onOrderFormClickListener.onCancelOrder(orderListBean.getOrderId());
+                }
+            }
+        })
 
         //拿到当前的订单
         switch (orderListBean.getOrderStatus()) {
@@ -181,5 +201,16 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<OrderFormAdapter.Ord
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    onOrderFormClickListener onOrderFormClickListener;
+
+    public void setOnOrderFormClickListener(OrderFormAdapter.onOrderFormClickListener onOrderFormClickListener) {
+        this.onOrderFormClickListener = onOrderFormClickListener;
+    }
+
+  public   interface  onOrderFormClickListener{
+      void   onGoPay(String orderId);
+      void   onCancelOrder(String orderId);
     }
 }
