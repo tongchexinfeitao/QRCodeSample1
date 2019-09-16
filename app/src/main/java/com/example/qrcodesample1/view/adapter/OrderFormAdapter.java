@@ -99,7 +99,7 @@ public class OrderFormAdapter extends XRecyclerView.Adapter<OrderFormAdapter.Ord
                     onOrderFormClickListener.onCancelOrder(orderListBean.getOrderId());
                 }
             }
-        })
+        });
 
         //拿到当前的订单
         switch (orderListBean.getOrderStatus()) {

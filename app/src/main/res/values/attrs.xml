@@ -3,4 +3,8 @@
     <declare-styleable name="MyAddSubView">
         <attr name="add_remove_color" format="reference|color" />
     </declare-styleable>
+
+    <declare-styleable name="MyTitleView">
+        <attr name="titleViewBackground" format="reference|color"/>
+    </declare-styleable>
 </resources>
