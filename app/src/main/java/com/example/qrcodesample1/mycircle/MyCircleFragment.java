@@ -28,6 +28,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * 我的圈子 多条目展示
+ */
 public class MyCircleFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.xrv_my_circle)

@@ -37,7 +37,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
- * 多图上传
+ * 发布圈子   多图上传
  */
 public class UpLoadPhotoForPushCircleFragment extends TakePhotoFragment {
     @BindView(R.id.btn_take_photo)
