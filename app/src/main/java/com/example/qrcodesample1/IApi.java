@@ -5,9 +5,11 @@ import com.example.qrcodesample1.bean.LoginBean;
 import com.example.qrcodesample1.bean.OrderFormBean;
 import com.example.qrcodesample1.bean.ProductBean;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -15,7 +17,9 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -67,6 +71,12 @@ public interface IApi {
   //将Call转成 io.reactivex 包下的 Observable
     @GET("small/order/verify/v1/findOrderListByStatus")
     Observable<OrderFormBean> getOrderFormInfo(@HeaderMap Map<String, String> headersMap , @QueryMap Map<String,Integer> paramsMap);
+
+
+    //将Call转成 io.reactivex 包下的 Observable
+    @Multipart
+    @POST("small/circle/verify/v1/releaseCircle")
+    Observable<OrderFormBean> pushCircle(@HeaderMap Map<String, String> headersMap , @QueryMap Map<String,Object> paramsMap, @Part List<MultipartBody.Part> parts);
 
 
 

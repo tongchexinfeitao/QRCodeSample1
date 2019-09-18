@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.example.qrcodesample1.R;
+import com.example.qrcodesample1.takephoto.MyTakePhotoFragment;
 import com.example.qrcodesample1.view.fragment.OrderFormFragment;
 import com.example.qrcodesample1.week.MyTitleView;
 import com.example.qrcodesample1.week.OrderFormWeekFragment;
@@ -41,9 +42,12 @@ public class OrderFormActivity extends AppCompatActivity {
         OrderFormFragment evaluateOrderFragment = OrderFormFragment.creat(3);
         OrderFormFragment completeOrderFragment = OrderFormFragment.creat(9);
 
+        //选择相册
+        MyTakePhotoFragment myTakePhotoFragment = new MyTakePhotoFragment();
+
         OrderFormWeekFragment orderFormWeekFragment = new OrderFormWeekFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_order,orderFormWeekFragment)
+                .replace(R.id.fl_order,myTakePhotoFragment)
                 .commit();
     }
 }
