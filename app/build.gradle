@@ -79,4 +79,7 @@ dependencies {
 
     //xrecyclerview
     implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
+
+    //takephoto,相册选择器
+    implementation 'org.devio.takephoto:takephoto_library:4.1.0'
 }
