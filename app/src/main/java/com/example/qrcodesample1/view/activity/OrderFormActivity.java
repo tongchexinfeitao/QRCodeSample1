@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.example.qrcodesample1.R;
+import com.example.qrcodesample1.mycircle.MyCircleFragment;
 import com.example.qrcodesample1.uploadPhoto.UpLoadPhotoForPushCircleFragment;
 import com.example.qrcodesample1.view.fragment.OrderFormFragment;
 
@@ -29,8 +30,10 @@ public class OrderFormActivity extends AppCompatActivity {
         OrderFormFragment completeOrderFragment = OrderFormFragment.creat(9);
 
         UpLoadPhotoForPushCircleFragment upLoadPhotoForPushCircleFragment = new UpLoadPhotoForPushCircleFragment();
+
+        MyCircleFragment myCircleFragment = new MyCircleFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_order,upLoadPhotoForPushCircleFragment)
+                .replace(R.id.fl_order,myCircleFragment)
                 .commit();
     }
 }

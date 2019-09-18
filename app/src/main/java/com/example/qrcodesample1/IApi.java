@@ -4,6 +4,7 @@ import com.example.qrcodesample1.bean.CartBean;
 import com.example.qrcodesample1.bean.LoginBean;
 import com.example.qrcodesample1.bean.OrderFormBean;
 import com.example.qrcodesample1.bean.ProductBean;
+import com.example.qrcodesample1.mycircle.MyCircleBean;
 
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,9 @@ public interface IApi {
     @POST("small/circle/verify/v1/releaseCircle")
     Observable<OrderFormBean> uploadPhotoForPushCircl(@HeaderMap Map<String, String> headersMap , @QueryMap Map<String,Object> paramsMap, @Part  List<MultipartBody.Part> parts);
 
+    //我的圈子
+    @GET("small/circle/verify/v1/findMyCircleById")
+    Observable<MyCircleBean> getMyCircle(@HeaderMap Map<String, String> headersMap , @QueryMap Map<String,Integer> paramsMap);
 
 
 }

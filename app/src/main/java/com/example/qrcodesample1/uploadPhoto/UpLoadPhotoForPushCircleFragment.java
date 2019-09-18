@@ -110,7 +110,7 @@ public class UpLoadPhotoForPushCircleFragment extends TakePhotoFragment {
                 //请求头
                 Map<String, String> headersMap = new HashMap<>();
                 headersMap.put("userId", "8112");
-                headersMap.put("sessionId", "15687766184668112");
+                headersMap.put("sessionId", "15687965780908112");
 
                 //参数
                 Map<String, Object> paramsMap = new HashMap<>();
