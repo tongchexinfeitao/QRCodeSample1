@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -29,6 +29,14 @@ configurations.all {
         }
     }
 }
+
+//4、app gradle 中 放到 dependencies 的外边
+greendao {
+    schemaVersion 1 //数据库版本号
+    daoPackage 'com.example.qrcodesample11.database' //设置时生成代码的目录
+    targetGenDir 'src/main/java' //设置DaoMaster、DaoSession、Dao目录
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -82,4 +90,7 @@ dependencies {
 
     //takephoto,相册选择器
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
+
+    //greenDao
+    implementation 'org.greenrobot:greendao:3.2.2'
 }
